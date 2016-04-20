@@ -14,7 +14,7 @@
 
 """Implements Context functionality."""
 
-import _credentials
+import _utils
 
 
 class Context(object):
@@ -58,24 +58,35 @@ class Context(object):
     return self._project_id
 
   @staticmethod
-  def default(project_id=None):
-    """Creates a default Context object.
+  def default(project_id=None, credentials=None):
+    """Retrieves a default Context object, creating it if necessary.
 
-    The default Context is a global shared instance used every time the default context is
-    retrieved.
+      The default Context is a global shared instance used every time the default context is
+      retrieved.
+
+      Attempting to use a Context with no project_id will raise an exception.
+
+      If the context already exists and either or both of the arguments are not None, they
+      will update the default context with the new values.
 
     Args:
-      The project ID to use for global context. If this has been set previously, it can be omitted.
-      Attempting to use a Context with no project_id will raise an exception.
+      project_id: The project ID to use for the default context.
+      credentials: The credentials to use for the default Context. If not supplied an attempt
+          will be made to create them from gcloud credentials.
 
     Returns:
       An initialized and shared instance of a Context object.
     """
 
     if Context._global_context is None:
-      credentials = _credentials.Credentials()
+      if credentials is None:
+        credentials = _utils.get_credentials()
+
       Context._global_context = Context(project_id, credentials)
-    elif project_id is not None:
-      Context._global_context._project_id = project_id
+    else:
+      if project_id is not None:
+        Context._global_context._project_id = project_id
+      if credentials is not None:
+        Context._global_context._credentials = credentials
 
     return Context._global_context

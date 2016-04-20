@@ -15,7 +15,7 @@
 import gcp._util
 
 import _api
-import _credentials
+import _utils
 
 
 # We could do this with the gcloud SDK. However, installing that while locked on oauth2.5
@@ -64,7 +64,7 @@ class Projects(object):
       credentials: the credentials for the account.
     """
     if credentials is None:
-      credentials = _credentials.Credentials()
+      credentials = _utils.get_credentials()
     self._api = _api.Api(credentials)
 
   def _retrieve_projects(self, page_token, count):
