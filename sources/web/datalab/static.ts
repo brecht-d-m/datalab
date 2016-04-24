@@ -108,7 +108,7 @@ function sendJupyterFile(relativePath: string, response: http.ServerResponse) {
  * @param filePath the relative file path of the static file within the IPYWidgets directory to send.
  * @param response the out-going response associated with the current HTTP request.
  */
-function sendIPYWidgetsFile(relativePath, response) {
+function sendIPYWidgetsFile(relativePath: string, response: http.ServerResponse) {
     var filePath = path.join(IPYWIDGETS_DIR, relativePath);
     fs.stat(filePath, function (e, stats) {
         if (e || !stats.isFile()) {
