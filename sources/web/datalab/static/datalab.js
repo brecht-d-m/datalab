@@ -366,7 +366,7 @@ function initializeNotebookApplication(ipy, notebook, events, dialog, utils) {
           }
         }
       }
-      originalExecute.apply(this, [ code, callbacks, options ]);
+      return originalExecute.apply(this, [ code, callbacks, options ]);
     }
   });
 
